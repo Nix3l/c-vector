@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "vector.h"
 
@@ -52,12 +53,12 @@ void vector_resize(vector_s* vec, size_t new_capacity) {
 
 void* vector_get(vector_s* vec, int index) {
     if(vec == NULL) { 
-        printf("vector_get(): invalid vector pointer\n");
+        printf("invalid vector pointer\n");
         return NULL;
     }
 
     if(index > vec->size || index < 0) {
-        printf("vector_get(): index out of bounds!\n");
+        printf("index out of bounds!\n");
         return NULL;
     }
 
@@ -71,7 +72,9 @@ void vector_add(vector_s* vec, void* new_data) {
     }
 
     vector_resize(vec, vec->capacity + 1);
-    vec->data[vec->size++] = new_data;
+    vec->size++;
+    void* dest = vec->data + vec->size * vec->element_size;
+    memcpy(dest, new_data, vec->element_size);
 }
 
 
