@@ -39,7 +39,7 @@ void vector_resize(vector_s* vec, size_t new_capacity) {
     size_t new_data_size = vec->element_size * new_capacity;
     void** new_data = realloc(vec->data, new_data_size);
 
-    printf("new size %zu, new capacity %zu\n", new_data_size, new_capacity);
+    // printf("new size %zu, new capacity %zu\n", new_data_size, new_capacity);
     
     if(new_data == NULL) {
         printf("vector_resize(): couldnt resize vector\n");
@@ -52,12 +52,12 @@ void vector_resize(vector_s* vec, size_t new_capacity) {
 
 void* vector_get(vector_s* vec, int index) {
     if(vec == NULL) { 
-        printf("invalid vector pointer\n");
+        printf("vector_get(): invalid vector pointer\n");
         return NULL;
     }
 
     if(index > vec->size || index < 0) {
-        printf("index out of bounds!\n");
+        printf("vector_get(): index out of bounds!\n");
         return NULL;
     }
 
