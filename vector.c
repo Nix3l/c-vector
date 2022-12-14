@@ -10,7 +10,6 @@
  *
  *          size => length of the vector
  *      capacity => maximum available memory of the vector
- *  element size => how big is one unit of data (size of type being stored)
  *
  *  NOTE(05/11/22): this implementation is complete. please DO NOT touch it under *ANY* circumstances
  *  
@@ -19,12 +18,11 @@
  *  so i simply opt not to
  */
 
-vector_s create_vector(size_t element_size) {
+vector_s create_vector() {
     vector_s vec;
     vec.size = 0;
-    vec.element_size = element_size;
     vec.capacity = VECTOR_INIT_CAPACITY;
-    vec.data = malloc(element_size * vec.capacity);
+    vec.data = malloc(sizeof(void*) * vec.capacity);
     
     // printf("created new vector with size, element size and capacity: %zu, %zu, %zu\n", vec.size, vec.element_size, vec.capacity);
 
@@ -37,8 +35,7 @@ void vector_resize(vector_s* vec, size_t new_capacity) {
         return;
     }
 
-    size_t new_data_size = vec->element_size * new_capacity;
-    void** new_data = realloc(vec->data, new_data_size);
+    void** new_data = realloc(vec->data, sizeof(void*) * new_capacity);
 
     // printf("new size %zu, new capacity %zu\n", new_data_size, new_capacity);
     
@@ -51,17 +48,17 @@ void vector_resize(vector_s* vec, size_t new_capacity) {
     vec->data = new_data;
 }
 
-void* vector_get(vector_s* vec, int index) {
+void* vector_get(vector_s* vec, size_t index) {
     if(vec == NULL) { 
         printf("invalid vector pointer\n");
         return NULL;
     }
 
-    if(index > vec->size || index < 0) {
+    if(index >= vec->size || index < 0) {
         printf("index out of bounds!\n");
         return NULL;
     }
-
+    
     return vec->data[index];
 }
 
@@ -72,19 +69,17 @@ void vector_add(vector_s* vec, void* new_data) {
     }
 
     vector_resize(vec, vec->capacity + 1);
-    vec->size++;
-    void* dest = vec->data + vec->size * vec->element_size;
-    memcpy(dest, new_data, vec->element_size);
+    vec->data[vec->size++] = new_data;
 }
 
 
-void vector_remove(vector_s* vec, int index) {
+void vector_remove(vector_s* vec, size_t index) {
     if(vec == NULL) { 
         printf("vector_remove(): invalid vector pointer\n");
         return;
     }
 
-    if(index > vec->size || index < 0) {
+    if(index >= vec->size || index < 0) {
         printf("vector_remove(): index out of bounds!\n");
         return;
     }
