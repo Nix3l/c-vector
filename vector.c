@@ -12,10 +12,8 @@
  *      capacity => maximum available memory of the vector
  *
  *  NOTE(05/11/22): this implementation is complete. please DO NOT touch it under *ANY* circumstances
+ *  NOTE(14/11/22): ok NOW this implementation is complete. please for the love of god DO NOT TOUCH UNDER **ANY** CIRCUMSTANCES
  *  
- *  while it is technically possible to store multiple types within one vector,
- *  it would entail keeping track of the element size when removing and adding data,
- *  so i simply opt not to
  */
 
 vector_s create_vector() {
@@ -23,8 +21,6 @@ vector_s create_vector() {
     vec.size = 0;
     vec.capacity = VECTOR_INIT_CAPACITY;
     vec.data = malloc(sizeof(void*) * vec.capacity);
-    
-    // printf("created new vector with size, element size and capacity: %zu, %zu, %zu\n", vec.size, vec.element_size, vec.capacity);
 
     return vec;
 }
@@ -36,8 +32,6 @@ void vector_resize(vector_s* vec, size_t new_capacity) {
     }
 
     void** new_data = realloc(vec->data, sizeof(void*) * new_capacity);
-
-    // printf("new size %zu, new capacity %zu\n", new_data_size, new_capacity);
     
     if(new_data == NULL) {
         printf("vector_resize(): couldnt resize vector\n");
